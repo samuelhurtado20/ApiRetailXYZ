@@ -7,13 +7,13 @@ namespace ApiRetailXYZ.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EncuestaController : ControllerBase
+    public class SucursalController : ControllerBase
     {
         private readonly RetailXyzContext _context;
         private readonly IUnitOfWork _uow;
-        private readonly ILogger<EncuestaController> _logger;
+        private readonly ILogger<SucursalController> _logger;
 
-        public EncuestaController(RetailXyzContext context, IUnitOfWork uow, ILogger<EncuestaController> logger)
+        public SucursalController(RetailXyzContext context, IUnitOfWork uow, ILogger<SucursalController> logger)
         {
             _context = context;
             _uow = uow;
@@ -21,12 +21,12 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpGet]
-        [Route("api/encuesta/GetAll")]
+        [Route("api/Sucursal/GetAll")]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var brand = await _context.Encuesta.ToListAsync();
+                var brand = await _context.Sucursal.ToListAsync();
                 if (brand == null)
                 {
                     return NotFound();
@@ -42,17 +42,17 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpGet]
-        [Route("api/encuesta/GetOne")]
+        [Route("api/Sucursal/GetOne")]
         public async Task<IActionResult> Get(Guid id)
         {
             try
             {
-                var encuesta = await _uow.Encuesta.Get(id);
-                if (encuesta == null)
+                var Sucursal = await _uow.Sucursal.Get(id);
+                if (Sucursal == null)
                 {
                     return NotFound();
                 }
-                return Ok(encuesta);
+                return Ok(Sucursal);
             }
             catch (Exception ex)
             {
@@ -61,12 +61,12 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpGet]
-        [Route("api/encuesta/GetAllSp")]
+        [Route("api/Sucursal/GetAllSp")]
         public async Task<IActionResult> GetAllSp()
         {
             try
             {
-                var collection = await _context.Encuesta.FromSqlRaw("EXECUTE GetAllEncuesta").ToListAsync();
+                var collection = await _context.Sucursal.FromSqlRaw("EXECUTE GetAllSucursal").ToListAsync();
                 return Ok(collection);
             }
             catch (Exception ex)
@@ -76,12 +76,12 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpPost]
-        [Route("api/encuesta/Insert")]
-        public async Task<IActionResult> Post(Encuesta entity)
+        [Route("api/Sucursal/Insert")]
+        public async Task<IActionResult> Post(Sucursal entity)
         {
             try
             {
-                await _uow.Encuesta.Insert(entity);
+                await _uow.Sucursal.Insert(entity);
                 return Ok(entity);
             }
             catch (Exception ex)
@@ -91,12 +91,12 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpPut]
-        [Route("api/encuesta/Update")]
-        public IActionResult Update(Encuesta entity)
+        [Route("api/Sucursal/Update")]
+        public IActionResult Update(Sucursal entity)
         {
             try
             {
-                _uow.Encuesta.Update(entity);
+                _uow.Sucursal.Update(entity);
                 return Ok(entity);
             }
             catch (Exception ex)
@@ -106,7 +106,7 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpGet]
-        [Route("api/encuesta/Delete")]
+        [Route("api/Sucursal/Delete")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             try
@@ -116,7 +116,7 @@ namespace ApiRetailXYZ.Controllers
                     return NotFound();
                 }
 
-                var brand = await _context.Encuesta
+                var brand = await _context.Sucursal
                     .FirstOrDefaultAsync(m => m.Id == id);
                 if (brand == null)
                 {
@@ -133,19 +133,19 @@ namespace ApiRetailXYZ.Controllers
         }
 
         [HttpDelete]
-        [Route("api/encuesta/DeleteConfirmed")]
+        [Route("api/Sucursal/DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var brand = await _context.Encuesta.FindAsync(id);
-            _context.Encuesta.Remove(brand);
+            var brand = await _context.Sucursal.FindAsync(id);
+            _context.Sucursal.Remove(brand);
             await _context.SaveChangesAsync();
             return Ok();
         }
 
         private bool Exists(Guid id)
         {
-            return _context.Encuesta.Any(e => e.Id == id);
+            return _context.Sucursal.Any(e => e.Id == id);
         }
     }
 }
